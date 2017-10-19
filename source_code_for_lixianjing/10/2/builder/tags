@@ -1,0 +1,153 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+DECLS_BEGIN	typedef.h	54;"	d
+DECLS_BEGIN	typedef.h	57;"	d
+DECLS_END	typedef.h	55;"	d
+DECLS_END	typedef.h	58;"	d
+DataCompareFunc	typedef.h	/^typedef int      (*DataCompareFunc)(void* ctx, void* data);$/;"	t
+DataDestroyFunc	typedef.h	/^typedef void     (*DataDestroyFunc)(void* ctx, void* data);$/;"	t
+DataHashFunc	typedef.h	/^typedef int       (*DataHashFunc)(void* data);$/;"	t
+DataVisitFunc	typedef.h	/^typedef Ret      (*DataVisitFunc)(void* ctx, void* data);$/;"	t
+MAX_ATTR_NR	typedef.h	72;"	d
+PrivInfo	xml_builder_dump.c	/^}PrivInfo;$/;"	t	typeref:struct:_PrivInfo	file:
+PrivInfo	xml_builder_tree.c	/^}PrivInfo;$/;"	t	typeref:struct:_PrivInfo	file:
+RET_FAIL	typedef.h	/^	RET_FAIL$/;"	e	enum:_Ret
+RET_INVALID_PARAMS	typedef.h	/^	RET_INVALID_PARAMS,$/;"	e	enum:_Ret
+RET_OK	typedef.h	/^	RET_OK,$/;"	e	enum:_Ret
+RET_OOM	typedef.h	/^	RET_OOM,$/;"	e	enum:_Ret
+RET_STOP	typedef.h	/^	RET_STOP,$/;"	e	enum:_Ret
+Ret	typedef.h	/^}Ret;$/;"	t	typeref:enum:_Ret
+SAFE_FREE	typedef.h	68;"	d
+SortFunc	typedef.h	/^typedef Ret (*SortFunc)(void** array, size_t nr, DataCompareFunc cmp);$/;"	t
+TYPEDEF_H	typedef.h	37;"	d
+XML	xml_parser_test.c	5;"	d	file:
+XML_BUILDER_DUMP_H	xml_builder_dump.h	33;"	d
+XML_BUILDER_H	xml_builder.h	35;"	d
+XML_BUILDER_TREE_H	xml_builder_tree.h	33;"	d
+XML_NODE_COMMENT	xml_tree.h	/^	XML_NODE_COMMENT$/;"	e	enum:_XmlNodeType
+XML_NODE_NONE	xml_tree.h	/^	XML_NODE_NONE,$/;"	e	enum:_XmlNodeType
+XML_NODE_NORMAL	xml_tree.h	/^	XML_NODE_NORMAL,$/;"	e	enum:_XmlNodeType
+XML_NODE_PI	xml_tree.h	/^	XML_NODE_PI,$/;"	e	enum:_XmlNodeType
+XML_NODE_TEXT	xml_tree.h	/^	XML_NODE_TEXT,$/;"	e	enum:_XmlNodeType
+XML_PARSER_H	xml_parser.h	2;"	d
+XML_TREE_H	xml_tree.h	36;"	d
+XmlAttr	xml_tree.h	/^}XmlAttr;$/;"	t	typeref:struct:_XmlAttr
+XmlBuilder	xml_builder.h	/^typedef struct _XmlBuilder XmlBuilder;$/;"	t	typeref:struct:_XmlBuilder
+XmlBuilderDestroyFunc	xml_builder.h	/^typedef void (*XmlBuilderDestroyFunc)(XmlBuilder* thiz);$/;"	t
+XmlBuilderOnCommentFunc	xml_builder.h	/^typedef void (*XmlBuilderOnCommentFunc)(XmlBuilder* thiz, const char* text, size_t length);$/;"	t
+XmlBuilderOnEndElementFunc	xml_builder.h	/^typedef void (*XmlBuilderOnEndElementFunc)(XmlBuilder* thiz, const char* tag);$/;"	t
+XmlBuilderOnErrorFunc	xml_builder.h	/^typedef void (*XmlBuilderOnErrorFunc)(XmlBuilder* thiz, int line, int row, const char* message);$/;"	t
+XmlBuilderOnPiElementFunc	xml_builder.h	/^typedef void (*XmlBuilderOnPiElementFunc)(XmlBuilder* thiz, const char* tag, const char** attrs);$/;"	t
+XmlBuilderOnStartElementFunc	xml_builder.h	/^typedef void (*XmlBuilderOnStartElementFunc)(XmlBuilder* thiz, const char* tag, const char** attrs);$/;"	t
+XmlBuilderOnTextFunc	xml_builder.h	/^typedef void (*XmlBuilderOnTextFunc)(XmlBuilder* thiz, const char* text, size_t length);$/;"	t
+XmlNode	xml_tree.h	/^}XmlNode;$/;"	t	typeref:struct:_XmlNode
+XmlNodeNormal	xml_tree.h	/^}XmlNodeNormal;$/;"	t	typeref:struct:_XmlNodeNormal
+XmlNodePi	xml_tree.h	/^}XmlNodePi;$/;"	t	typeref:struct:_XmlNodePi
+XmlNodeType	xml_tree.h	/^}XmlNodeType;$/;"	t	typeref:enum:_XmlNodeType
+XmlNodeVisitFunc	xml_tree.h	/^typedef Ret (*XmlNodeVisitFunc)(void* ctx, int level, XmlNode* node);$/;"	t
+XmlParser	xml_parser.h	/^typedef struct _XmlParser XmlParser;$/;"	t	typeref:struct:_XmlParser
+_PrivInfo	xml_builder_dump.c	/^typedef struct _PrivInfo$/;"	s	file:
+_PrivInfo	xml_builder_tree.c	/^typedef struct _PrivInfo$/;"	s	file:
+_Ret	typedef.h	/^typedef enum _Ret$/;"	g
+_XmlAttr	xml_tree.h	/^typedef struct _XmlAttr$/;"	s
+_XmlBuilder	xml_builder.h	/^struct _XmlBuilder$/;"	s
+_XmlNode	xml_tree.h	/^typedef struct _XmlNode$/;"	s
+_XmlNodeNormal	xml_tree.h	/^typedef struct _XmlNodeNormal$/;"	s
+_XmlNodePi	xml_tree.h	/^typedef struct _XmlNodePi$/;"	s
+_XmlNodeType	xml_tree.h	/^typedef enum _XmlNodeType$/;"	g
+_XmlParser	xml_parser.c	/^struct _XmlParser$/;"	s	file:
+attrs	xml_parser.c	/^	char* attrs[2*MAX_ATTR_NR+1];$/;"	m	struct:_XmlParser	file:
+attrs_nr	xml_parser.c	/^	int   attrs_nr;$/;"	m	struct:_XmlParser	file:
+buffer	xml_parser.c	/^	char* buffer;$/;"	m	struct:_XmlParser	file:
+buffer_total	xml_parser.c	/^	int buffer_total;$/;"	m	struct:_XmlParser	file:
+buffer_used	xml_parser.c	/^	int buffer_used;$/;"	m	struct:_XmlParser	file:
+builder	xml_parser.c	/^	XmlBuilder* builder;$/;"	m	struct:_XmlParser	file:
+children	xml_tree.h	/^	struct _XmlNode* children;$/;"	m	struct:_XmlNode	typeref:struct:_XmlNode::_XmlNode
+comment	xml_tree.h	/^		char* comment;$/;"	m	union:_XmlNode::__anon1
+current	xml_builder_tree.c	/^	XmlNode* current;$/;"	m	struct:_PrivInfo	file:
+destroy	xml_builder.h	/^	XmlBuilderDestroyFunc        destroy;$/;"	m	struct:_XmlBuilder
+dump_tree	xml_builder_tree.c	/^void dump_tree(XmlNode* tree)$/;"	f
+dump_tree	xml_parser_test.c	/^void dump_tree(XmlNode* tree)$/;"	f
+first_attr	xml_tree.h	/^	XmlAttr* first_attr;$/;"	m	struct:_XmlNodeNormal
+first_attr	xml_tree.h	/^	XmlAttr* first_attr;$/;"	m	struct:_XmlNodePi
+fp	xml_builder_dump.c	/^	FILE* fp;$/;"	m	struct:_PrivInfo	file:
+main	xml_builder_dump.c	/^int main(int argc, char* argv[])$/;"	f
+main	xml_builder_tree.c	/^int main(int argc, char* argv[])$/;"	f
+main	xml_parser_test.c	/^int main(int argc, char* argv[])$/;"	f
+main	xml_tree.c	/^int main(int argc, char* argv[])$/;"	f
+name	xml_tree.h	/^	char* name;	$/;"	m	struct:_XmlNodePi
+name	xml_tree.h	/^	char* name;$/;"	m	struct:_XmlAttr
+name	xml_tree.h	/^	char* name;$/;"	m	struct:_XmlNodeNormal
+next	xml_tree.h	/^	struct _XmlAttr* next;$/;"	m	struct:_XmlAttr	typeref:struct:_XmlAttr::_XmlAttr
+normal	xml_tree.h	/^		XmlNodeNormal normal;$/;"	m	union:_XmlNode::__anon1
+on_comment	xml_builder.h	/^	XmlBuilderOnCommentFunc      on_comment;$/;"	m	struct:_XmlBuilder
+on_end_element	xml_builder.h	/^	XmlBuilderOnEndElementFunc   on_end_element;$/;"	m	struct:_XmlBuilder
+on_error	xml_builder.h	/^	XmlBuilderOnErrorFunc        on_error;$/;"	m	struct:_XmlBuilder
+on_pi_element	xml_builder.h	/^	XmlBuilderOnPiElementFunc    on_pi_element;$/;"	m	struct:_XmlBuilder
+on_start_element	xml_builder.h	/^	XmlBuilderOnStartElementFunc on_start_element;$/;"	m	struct:_XmlBuilder
+on_text	xml_builder.h	/^	XmlBuilderOnTextFunc         on_text;$/;"	m	struct:_XmlBuilder
+parent	xml_tree.h	/^	struct _XmlNode* parent;$/;"	m	struct:_XmlNode	typeref:struct:_XmlNode::_XmlNode
+pi	xml_tree.h	/^		XmlNodePi pi;$/;"	m	union:_XmlNode::__anon1
+priv	xml_builder.h	/^	char priv[1];$/;"	m	struct:_XmlBuilder
+read_file	xml_parser_test.c	/^char* read_file(const char* file_name)$/;"	f
+read_ptr	xml_parser.c	/^	const char* read_ptr;$/;"	m	struct:_XmlParser	file:
+return_if_fail	typedef.h	61;"	d
+return_val_if_fail	typedef.h	64;"	d
+root	xml_builder_tree.c	/^	XmlNode* root;$/;"	m	struct:_PrivInfo	file:
+sibling	xml_tree.h	/^	struct _XmlNode* sibling;$/;"	m	struct:_XmlNode	typeref:struct:_XmlNode::_XmlNode
+strtrim	xml_parser.c	/^static const char* strtrim(char* str)$/;"	f	file:
+text	xml_tree.h	/^		char* text;$/;"	m	union:_XmlNode::__anon1
+type	xml_tree.h	/^	XmlNodeType type;$/;"	m	struct:_XmlNode
+u	xml_tree.h	/^	}u;$/;"	m	struct:_XmlNode	typeref:union:_XmlNode::__anon1
+value	xml_tree.h	/^	char* value;$/;"	m	struct:_XmlAttr
+xml_attr_destroy	xml_tree.c	/^void xml_attr_destroy(XmlAttr* attr)$/;"	f
+xml_builder_destroy	xml_builder.h	/^static inline void xml_builder_destroy(XmlBuilder* thiz)$/;"	f
+xml_builder_dump_create	xml_builder_dump.c	/^XmlBuilder* xml_builder_dump_create(FILE* fp)$/;"	f
+xml_builder_dump_destroy	xml_builder_dump.c	/^static void xml_builder_dump_destroy(XmlBuilder* thiz)$/;"	f	file:
+xml_builder_dump_on_comment	xml_builder_dump.c	/^static void xml_builder_dump_on_comment(XmlBuilder* thiz, const char* text, size_t length)$/;"	f	file:
+xml_builder_dump_on_end_element	xml_builder_dump.c	/^static void xml_builder_dump_on_end_element(XmlBuilder* thiz, const char* tag)$/;"	f	file:
+xml_builder_dump_on_error	xml_builder_dump.c	/^static void xml_builder_dump_on_error(XmlBuilder* thiz, int line, int row, const char* message)$/;"	f	file:
+xml_builder_dump_on_pi_element	xml_builder_dump.c	/^static void xml_builder_dump_on_pi_element(XmlBuilder* thiz, const char* tag, const char** attrs)$/;"	f	file:
+xml_builder_dump_on_start_element	xml_builder_dump.c	/^static void xml_builder_dump_on_start_element(XmlBuilder* thiz, const char* tag, const char** attrs)$/;"	f	file:
+xml_builder_dump_on_text	xml_builder_dump.c	/^static void xml_builder_dump_on_text(XmlBuilder* thiz, const char* text, size_t length)$/;"	f	file:
+xml_builder_get_tree	xml_builder_tree.c	/^XmlNode*    xml_builder_get_tree(XmlBuilder* thiz)$/;"	f
+xml_builder_on_comment	xml_builder.h	/^static inline void xml_builder_on_comment(XmlBuilder* thiz, const char* text, size_t length)$/;"	f
+xml_builder_on_end_element	xml_builder.h	/^static inline void xml_builder_on_end_element(XmlBuilder* thiz, const char* tag)$/;"	f
+xml_builder_on_error	xml_builder.h	/^static inline void xml_builder_on_error(XmlBuilder* thiz, int line, int row, const char* message)$/;"	f
+xml_builder_on_pi_element	xml_builder.h	/^static inline void xml_builder_on_pi_element(XmlBuilder* thiz, const char* tag, const char** attrs)$/;"	f
+xml_builder_on_start_element	xml_builder.h	/^static inline void xml_builder_on_start_element(XmlBuilder* thiz, const char* tag, const char** attrs)$/;"	f
+xml_builder_on_text	xml_builder.h	/^static inline void xml_builder_on_text(XmlBuilder* thiz, const char* text, size_t length)$/;"	f
+xml_builder_tree_create	xml_builder_tree.c	/^XmlBuilder* xml_builder_tree_create(void)$/;"	f
+xml_builder_tree_destroy	xml_builder_tree.c	/^static void xml_builder_tree_destroy(XmlBuilder* thiz)$/;"	f	file:
+xml_builder_tree_on_comment	xml_builder_tree.c	/^static void xml_builder_tree_on_comment(XmlBuilder* thiz, const char* text, size_t length)$/;"	f	file:
+xml_builder_tree_on_end_element	xml_builder_tree.c	/^static void xml_builder_tree_on_end_element(XmlBuilder* thiz, const char* tag)$/;"	f	file:
+xml_builder_tree_on_error	xml_builder_tree.c	/^static void xml_builder_tree_on_error(XmlBuilder* thiz, int line, int row, const char* message)$/;"	f	file:
+xml_builder_tree_on_pi_element	xml_builder_tree.c	/^static void xml_builder_tree_on_pi_element(XmlBuilder* thiz, const char* tag, const char** attrs)$/;"	f	file:
+xml_builder_tree_on_start_element	xml_builder_tree.c	/^static void xml_builder_tree_on_start_element(XmlBuilder* thiz, const char* tag, const char** attrs)$/;"	f	file:
+xml_builder_tree_on_text	xml_builder_tree.c	/^static void xml_builder_tree_on_text(XmlBuilder* thiz, const char* text, size_t length)$/;"	f	file:
+xml_node_append_attr	xml_tree.c	/^void xml_node_append_attr(XmlNode* node, const char* name, const char* value)$/;"	f
+xml_node_append_child	xml_tree.c	/^XmlNode* xml_node_append_child(XmlNode* node, XmlNode* child)$/;"	f
+xml_node_append_sibling	xml_tree.c	/^XmlNode* xml_node_append_sibling(XmlNode* node, XmlNode* sibling)$/;"	f
+xml_node_create_comment	xml_tree.c	/^XmlNode* xml_node_create_comment(const char* comment)$/;"	f
+xml_node_create_normal	xml_tree.c	/^XmlNode* xml_node_create_normal(const char* name, const char** attrs)$/;"	f
+xml_node_create_pi	xml_tree.c	/^XmlNode* xml_node_create_pi(const char* name, const char** attrs)$/;"	f
+xml_node_create_text	xml_tree.c	/^XmlNode* xml_node_create_text(const char* text)$/;"	f
+xml_node_destroy	xml_tree.c	/^void xml_node_destroy(XmlNode* node)$/;"	f
+xml_node_visit	xml_tree.c	/^void xml_node_visit(XmlNode* node, XmlBuilder* builder)$/;"	f
+xml_parser_create	xml_parser.c	/^XmlParser* xml_parser_create(void)$/;"	f
+xml_parser_destroy	xml_parser.c	/^void xml_parser_destroy(XmlParser* thiz)$/;"	f
+xml_parser_parse	xml_parser.c	/^void xml_parser_parse(XmlParser* thiz, const char* xml)$/;"	f
+xml_parser_parse_attrs	xml_parser.c	/^static void xml_parser_parse_attrs(XmlParser* thiz, char end_char)$/;"	f	file:
+xml_parser_parse_comment	xml_parser.c	/^static void xml_parser_parse_comment(XmlParser* thiz)$/;"	f	file:
+xml_parser_parse_end_tag	xml_parser.c	/^static void xml_parser_parse_end_tag(XmlParser* thiz)$/;"	f	file:
+xml_parser_parse_entity	xml_parser.c	/^static void xml_parser_parse_entity(XmlParser* thiz)$/;"	f	file:
+xml_parser_parse_pi	xml_parser.c	/^static void xml_parser_parse_pi(XmlParser* thiz)$/;"	f	file:
+xml_parser_parse_start_tag	xml_parser.c	/^static void xml_parser_parse_start_tag(XmlParser* thiz)$/;"	f	file:
+xml_parser_parse_text	xml_parser.c	/^static void xml_parser_parse_text(XmlParser* thiz)$/;"	f	file:
+xml_parser_reset_buffer	xml_parser.c	/^static void xml_parser_reset_buffer(XmlParser* thiz)$/;"	f	file:
+xml_parser_set_builder	xml_parser.c	/^void xml_parser_set_builder(XmlParser* thiz, XmlBuilder* builder)$/;"	f
+xml_parser_strdup	xml_parser.c	/^static int xml_parser_strdup(XmlParser* thiz, const char* start, size_t length)$/;"	f	file:
