@@ -45,7 +45,7 @@ list_status_t dl_list_for_each(dlink_list_t *thiz, list_node_t **node, fp_visit_
 {
     list_node_t *p_node = NULL;
 
-    if (NULL == thiz) {
+    if (NULL == thiz || thiz->length == 0) {
         debug("list is NULL.in func:%s.\r\n", __func__); 
         return LIST_NULL_ERROR; 
     }
@@ -181,8 +181,36 @@ list_status_t dl_list_delete(dlink_list_t *thiz, fp_visit_func compare_func, voi
 
         return LIST_NO_ERROR;
     } else {
+        debug("could not find node.in func:%s.\r\n", __func__); 
         return LIST_FAIL;
     }
+}
+
+list_status_t dl_list_clear (dlink_list_t *thiz)
+{
+    list_node_t *p_node = NULL;
+    
+    if (NULL == thiz) {
+        debug("list is NULL.in func:%s.\r\n", __func__); 
+        return LIST_NULL_ERROR; 
+    }
+
+    if (thiz->length == 0) {
+        debug("list is empty!in func:%s.\r\n",__func__);
+	return LIST_FAIL;
+    }
+
+    p_node = thiz->head->next;
+    
+    debug("%s:before clear:%d\r\n", __func__, thiz->length);
+    for (; thiz->length > 0;) {
+        debug("deleted data:%d\r\n", *(int *)p_node->data);
+        dl_list_delete_node(thiz, p_node);
+        p_node = p_node->next;
+    }
+    debug("%s:after clear:%d\r\n", __func__, thiz->length);
+
+    return LIST_NO_ERROR;
 }
 
 list_status_t dl_list_destory(dlink_list_t **thiz)

@@ -122,4 +122,5 @@ list_status_t dl_list_for_each(dlink_list_t *thiz, list_node_t **node, fp_visit_
  */
 list_status_t dl_list_destory(dlink_list_t **thiz);
 
+list_status_t dl_list_clear(dlink_list_t *thiz);
 #endif

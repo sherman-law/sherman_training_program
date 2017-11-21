@@ -51,6 +51,11 @@ int main (void)
 
     data = 30;
     dl_list_append(ming_list, &data, sizeof(data));
+
+    data = 99;
+    dl_list_append(ming_list, &data, sizeof(data));
+    
+    dl_list_clear(ming_list);
     data = 40;
     dl_list_append(ming_list, &data, sizeof(data));
     data = 50;
