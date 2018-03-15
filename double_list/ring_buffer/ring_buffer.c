@@ -2,259 +2,122 @@
 
 static void check_limit (rbuf_t *thiz)
 {
-    if (thiz->read_cursor >= thiz->total_length) {
-        thiz->read_cursor = 0;	
+    if (thiz->_read_cursor >= thiz->_total_length) {
+        thiz->_read_cursor = 0;	
     }
 
-    if (thiz->write_cursor >= thiz->total_length) {
-       thiz->write_cursor = 0; 
+    if (thiz->_write_cursor >= thiz->_total_length) {
+       thiz->_write_cursor = 0; 
     }
     return;
 }
 
-static void get_write_cursor_before (rbuf_t *thiz, int length)
+rbuf_status_t rbuf_create(rbuf_t *thiz, void *buffer, uint16_t itemsize, uint16_t length)
 {
-    return; 
-}
-
-rbuf_t *rbuf_create(uint16_t total_length, uint16_t size)
-{
-    rbuf_t *thiz = NULL;
-    
-    thiz = (rbuf_t *)malloc(sizeof(rbuf_t));
-
-    if (NULL == thiz) {
+    if (NULL == thiz) {                          /* check thiz pointer */
         debug("create fail!in func:%s\r\n", __func__); 
-	return NULL;
+	return R_BUF_NULL_ERROR;
     } 
 
-    thiz->data = malloc(total_length * size);
+    /* initialize parameter of ring buffer */
+    thiz->_data           = buffer;
+    thiz->_total_length   = length;
+    thiz->_space_left     = length;
+    thiz->_itemsize       = itemsize;
+    thiz->_read_cursor    = 0;
+    thiz->_write_cursor   = 0;
 
-    if (NULL == thiz->data) {
-        debug("create ring buffer's data fail!in func:%s\r\n", __func__); 
-	return NULL;
-    } 
-
-    thiz->total_length   = total_length;
-    thiz->space_left     = total_length;
-    thiz->read_cursor    = 0;
-    thiz->write_cursor   = 0;
-    thiz->page_counter   = 0;
-    thiz->last_read_page = 0;
-
-    return thiz;
+    return R_BUF_NO_ERROR;
 }
 
-rbuf_status_t rbuf_write(rbuf_t *thiz, void *data, uint16_t length, int size)
+rbuf_status_t rbuf_write(rbuf_t *thiz, const void *data, uint16_t length)
 {
-    uint16_t temp_space = 0;
+    uint16_t to_copy  = 0;
+    uint16_t had_copy = 0;
 
-    if (NULL == thiz) {
+    if (NULL == thiz) {                          /* check thiz pointer */
         debug("thiz is NULL!in func:%s\r\n", __func__); 
 	return R_BUF_NULL_ERROR;
     } 
 
-    if (length > thiz->total_length) {
-        debug("length of data is too big.in func:%s\r\n", __func__);
+    /* check whether the ring buffer has enough space to be written */
+    if (length > thiz->_space_left) {
+        debug("data is too big to insert to ring buf.in func:%s\r\n", __func__);
 	return R_BUF_INVAIL_PARAM;
     }
 
-    temp_space = thiz->space_left;
-
-    /****************************************
-     * have enough space to be written
-     ****************************************/
-    if (thiz->space_left >= length) {
-        memcpy(thiz->data + (thiz->write_cursor * size), data, length * size);
-
-        thiz->space_left   -= length;	
-	thiz->write_cursor += length;
-
-	check_limit(thiz);
-
-	return R_BUF_NO_ERROR;
-    } else {
-#if 0
-        if ((length / thiz->total_length) < 1) {
-#endif            
-    /****************************************
-     * not have enough space to be written 
-     * so data should be divided into pieces 
-     * to save
-     ****************************************/
-            memcpy(thiz->data + (thiz->write_cursor * size), data, thiz->space_left * size);
- 
-            thiz->space_left   = thiz->total_length;	
-	    thiz->write_cursor = 0;
-            thiz->page_counter++;        
-
-            memcpy(thiz->data + thiz->write_cursor, 
-	           data + (temp_space * size), 
-	          (length - temp_space) * size);
-        
-    	    thiz->space_left   -= (length - temp_space);
-	    thiz->write_cursor += (length - temp_space);
-
-	    check_limit(thiz);
-
-	    return R_BUF_NO_ERROR;
-#if 0
-	} else {
-            memcpy(thiz->data + thiz->write_cursor, 
-                   data + length - thiz->total_length, 
-		   temp_space * size);
-
-            thiz->space_left   = thiz->total_length;	
-	    thiz->write_cursor = 0;
-            thiz->page++;        
-
-	    memcpy(thiz->data + thiz->write_cursor,
-	           data + length - thiz->total_length + temp_space,
-                  (thiz->total_length - temp_space) * size);
-	    
-   	    thiz->space_left   -= (length - thiz->space_left);
-	    thiz->write_cursor += (length - thiz->space_left);
-
-	    return R_BUF_NO_ERROR;
-	}
-#endif
+    /* calculate the space from write_cursor to the end of ring_buffer */
+    to_copy = thiz->_total_length - thiz->_write_cursor;
+    if (to_copy > length) {
+        to_copy = length;   /* if we have enough space to be written */
     }
 
-}
-
-void print_all (rbuf_t *thiz, int length) 
-{
-    int i = 0;
-
-    for (i = 0; i < length * 4; i += 4) {
-        printf("data:%d\r\n", *(int *)(thiz->data + i));
+    /* if we don't have enough space,we write to the end first */
+    memcpy(thiz->_data + thiz->_write_cursor * thiz->_itemsize, 
+           data, 
+	   to_copy * thiz->_itemsize);
+    thiz->_space_left -= to_copy;
+    
+    /* calculate the rest of data */
+    had_copy += to_copy;
+    thiz->_write_cursor += to_copy;
+    length -= to_copy;
+    if (length > 0) {
+        /* write the rest of data to ring buffer */
+        memcpy(thiz->_data, 
+               data + had_copy * thiz->_itemsize, 
+	       length * thiz->_itemsize); 
+	thiz->_write_cursor = length;
+        thiz->_space_left -= length;
     }
+    check_limit(thiz);
+
+    return R_BUF_NO_ERROR;
 }
-//#if 0
-uint16_t rbuf_read(rbuf_t *thiz, void *user_buffer, int length, int size)
+
+rbuf_status_t rbuf_read(rbuf_t *thiz, void *data, uint16_t length)
 {
-    int new_data_num     = 0;
-    uint16_t data_should_read = 0;
+    uint16_t to_copy  = 0;
+    uint16_t had_copy = 0;
+    uint16_t data_num = thiz->_total_length - thiz->_space_left;
 
     if (NULL == thiz) {
         debug("thiz is NULL!in func:%s\r\n", __func__); 
 	return 0;
     } 
 
-    if (thiz->last_read_page == thiz->page_counter) {
-        
-        new_data_num = thiz->write_cursor - thiz->read_cursor;
-
-   	debug("new data number is :%d\r\n", new_data_num);
-	/* the page_counter change after new_data_num caculate */
-	if (new_data_num <= 0) {
-
-   	    debug("page has changed\r\n");
-            uint16_t write_offset = thiz->write_cursor; 
-
-            data_should_read = thiz->total_length - thiz->read_cursor;
-
-            memcpy(user_buffer, 
-	           thiz->data + thiz->read_cursor * size,
-		   data_should_read * size);
-	    memcpy(user_buffer + data_should_read * size,
-    	           thiz->data,
-		   write_offset * size);
-
-	    thiz->read_cursor = write_offset;
-	    thiz->last_read_page = thiz->page_counter;
-
-	    return data_should_read + write_offset; 
+    if (length > data_num) {
+        if (data_num == 0) {
+            return R_BUF_EMPTY;	
 	}
-        
-	if (new_data_num < length) {
-            memcpy(user_buffer, 
-                   thiz->data + (thiz->read_cursor * size),
-                   new_data_num * size);	    
+	/* only have data_num bytes of data */
+        length = data_num;
+    }
 
-	    thiz->read_cursor += new_data_num;
-	    check_limit(thiz);
-            thiz->last_read_page = thiz->page_counter;
-   	    return new_data_num;
-	} else {
-            memcpy(user_buffer, 
-                   thiz->data + (thiz->read_cursor * size),
-                   length * size);	    
+    to_copy = thiz->_total_length - thiz->_read_cursor;
+    if (to_copy > length) {
+        to_copy = length; 
+    }
+    memcpy(data, 
+           thiz->_data + thiz->_read_cursor * thiz->_itemsize, 
+	   to_copy * thiz->_itemsize);
+    thiz->_space_left += to_copy;
 
-	    thiz->read_cursor += length;
-	    check_limit(thiz);
-            thiz->last_read_page = thiz->page_counter;
-	    return length;
-	}
+    had_copy += to_copy;
+    thiz->_read_cursor += to_copy;
+    length -= to_copy;
+    if (length > 0) {
+        memcpy(data + had_copy * thiz->_itemsize, 
+               thiz->_data, 
+	       length * thiz->_itemsize);
+	thiz->_read_cursor = length;
+        thiz->_space_left += length;
+    }
+    check_limit(thiz);
 
-    } else if (thiz->last_read_page + 1 == thiz->page_counter) {
-        uint16_t write_offset = thiz->write_cursor; 
-
-	if (write_offset < thiz->read_cursor) {
-
-            data_should_read = thiz->total_length - thiz->read_cursor;
-
-            memcpy(user_buffer, 
-	           thiz->data + thiz->read_cursor * size,
-		   data_should_read * size);
-	    memcpy(user_buffer + data_should_read * size,
-    	           thiz->data,
-		   write_offset * size);
-
-	    thiz->read_cursor = write_offset;
-	    thiz->last_read_page = thiz->page_counter;
-
-	    return data_should_read + write_offset;           	
-	} else {
-     	    new_data_num = thiz->write_cursor;
-
-            if (new_data_num < length) {
-                memcpy(user_buffer, 
-                       thiz->data,
-                       new_data_num * size);	    
-
-	        thiz->read_cursor = new_data_num;
-	        check_limit(thiz);
-                thiz->last_read_page = thiz->page_counter;
-   	        return new_data_num;
-            } else {
-                memcpy(user_buffer, 
-                       thiz->data,
-                       length * size);	    
-
-	        thiz->read_cursor = length;
-	        check_limit(thiz);
-                thiz->last_read_page = thiz->page_counter;
-	        return length;
-    	    }
-	}   
-    } else {
-        new_data_num = thiz->write_cursor;
-
-        if (new_data_num < length) {
-            memcpy(user_buffer, 
-                   thiz->data + (thiz->read_cursor * size),
-                   new_data_num * size);	    
-
-	    thiz->read_cursor = new_data_num;
-	    check_limit(thiz);
-            thiz->last_read_page = thiz->page_counter;
-   	    return new_data_num;
-	} else {
-            memcpy(user_buffer, 
-                   thiz->data + (thiz->read_cursor * size),
-                   length * size);	    
-
-	    thiz->read_cursor = length;
-	    check_limit(thiz);
-            thiz->last_read_page = thiz->page_counter;
-	    return length;
-	}
-    } 
+    return R_BUF_NO_ERROR;
 }
 
 
 
 
-
-//#endif

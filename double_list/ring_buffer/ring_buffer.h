@@ -8,26 +8,51 @@ typedef int rbuf_status_t;
 #define R_BUF_NO_ERROR     1
 #define R_BUF_INVAIL_PARAM 2
 #define R_BUF_FAIL         3 
+#define R_BUF_EMPTY        4 
 
 typedef struct _rbuf_t {
-    void *data;
-    uint16_t total_length;
-    uint16_t space_left;
+    void     *_data;         /* point to the memory that storage user's data */
+    uint16_t  _total_length; /* length of ring_buf */
+    uint16_t  _space_left;   /* length of free space */
+    uint16_t  _itemsize;     /* size of item */
 
-    uint8_t page_counter;
-    uint8_t last_read_page;
-
-    uint16_t read_cursor;
-    uint16_t write_cursor;
+    uint16_t  _read_cursor;  /* read_cursor */
+    uint16_t  _write_cursor; /* write_cursor */
 } rbuf_t;
 
-rbuf_t *rbuf_create(uint16_t total_length, uint16_t size);
+/**
+ * \brief  ring buffer creating function
+ *
+ * \param[in,out] thiz    :thiz pointer pointe to rbuf_t object
+ * \param[in]     buffer  :source place address to storage data
+ * \param[in]     itemsize:size of one item
+ * \param[in]     length  :length of this ring buffer
+ *
+ * \retval error code
+ */
+rbuf_status_t rbuf_create(rbuf_t *thiz, void *buffer, uint16_t itemsize, uint16_t length);
 
-rbuf_status_t rbuf_write(rbuf_t *thiz, void *data, uint16_t length, int size);
+/**
+ * \brief  ring buffer writing function
+ *
+ * \param[in,out] thiz    :thiz pointer pointe to rbuf_t object
+ * \param[in]     data    :source data address which should be written
+ * \param[in]     length  :length of data should be written
+ *
+ * \retval error code
+ */
+rbuf_status_t rbuf_write(rbuf_t *thiz, const void *data, uint16_t length);
 
-uint16_t rbuf_read(rbuf_t *thiz, void *user_buffer, int length, int size);
-
-void print_all (rbuf_t *thiz, int length); 
+/**
+ * \brief  ring buffer reading function
+ *
+ * \param[in,out] thiz    :thiz pointer pointe to rbuf_t object
+ * \param[in]     data    :source data address which should be read
+ * \param[in]     length  :length of data should be read
+ *
+ * \retval error code
+ */
+rbuf_status_t rbuf_read(rbuf_t *thiz, void *data, uint16_t length);
 
 #endif
 
