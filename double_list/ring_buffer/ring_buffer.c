@@ -16,7 +16,7 @@ rbuf_status_t rbuf_create(rbuf_t *thiz, void *buffer, uint16_t itemsize, uint16_
 {
     if (NULL == thiz) {                          /* check thiz pointer */
         debug("create fail!in func:%s\r\n", __func__); 
-	return R_BUF_NULL_ERROR;
+	return RBUF_NULL_ERROR;
     } 
 
     /* initialize parameter of ring buffer */
@@ -27,7 +27,7 @@ rbuf_status_t rbuf_create(rbuf_t *thiz, void *buffer, uint16_t itemsize, uint16_
     thiz->_read_cursor    = 0;
     thiz->_write_cursor   = 0;
 
-    return R_BUF_NO_ERROR;
+    return RBUF_NO_ERROR;
 }
 
 rbuf_status_t rbuf_write(rbuf_t *thiz, const void *data, uint16_t length)
@@ -37,13 +37,13 @@ rbuf_status_t rbuf_write(rbuf_t *thiz, const void *data, uint16_t length)
 
     if (NULL == thiz) {                          /* check thiz pointer */
         debug("thiz is NULL!in func:%s\r\n", __func__); 
-	return R_BUF_NULL_ERROR;
+	return RBUF_NULL_ERROR;
     } 
 
     /* check whether the ring buffer has enough space to be written */
     if (length > thiz->_space_left) {
         debug("data is too big to insert to ring buf.in func:%s\r\n", __func__);
-	return R_BUF_INVAIL_PARAM;
+	return RBUF_INVAIL_PARAM;
     }
 
     /* calculate the space from write_cursor to the end of ring_buffer */
@@ -72,7 +72,7 @@ rbuf_status_t rbuf_write(rbuf_t *thiz, const void *data, uint16_t length)
     }
     check_limit(thiz);
 
-    return R_BUF_NO_ERROR;
+    return RBUF_NO_ERROR;
 }
 
 rbuf_status_t rbuf_read(rbuf_t *thiz, void *data, uint16_t length)
@@ -83,20 +83,21 @@ rbuf_status_t rbuf_read(rbuf_t *thiz, void *data, uint16_t length)
 
     if (NULL == thiz) {
         debug("thiz is NULL!in func:%s\r\n", __func__); 
-	return 0;
+	return RBUF_NULL_ERROR;
     } 
 
     if (length > data_num) {
         if (data_num == 0) {
-            return R_BUF_EMPTY;	
+            return RBUF_EMPTY;	
 	}
 	/* only have data_num bytes of data */
         length = data_num;
     }
 
+    /* read data from read_cursor to the end of the buffer */
     to_copy = thiz->_total_length - thiz->_read_cursor;
     if (to_copy > length) {
-        to_copy = length; 
+        to_copy = length;   /* if requires data number is larger */ 
     }
     memcpy(data, 
            thiz->_data + thiz->_read_cursor * thiz->_itemsize, 
@@ -107,6 +108,7 @@ rbuf_status_t rbuf_read(rbuf_t *thiz, void *data, uint16_t length)
     thiz->_read_cursor += to_copy;
     length -= to_copy;
     if (length > 0) {
+        /* read the rest of data from the head of buffer */
         memcpy(data + had_copy * thiz->_itemsize, 
                thiz->_data, 
 	       length * thiz->_itemsize);
@@ -115,9 +117,24 @@ rbuf_status_t rbuf_read(rbuf_t *thiz, void *data, uint16_t length)
     }
     check_limit(thiz);
 
-    return R_BUF_NO_ERROR;
+    return RBUF_NO_ERROR;
 }
 
+rbuf_status_t rbuf_reset (rbuf_t *thiz)
+{
+    if (NULL == thiz) {
+        debug("thiz is NULL!in func:%s\r\n", __func__); 
+	return RBUF_NULL_ERROR;
+    } 
 
+    thiz->_write_cursor = 0; /* reset write cursor */
+    thiz->_read_cursor  = 0; /* reset read cursor */
+    thiz->_space_left   = thiz->_total_length;
+
+    /* reset memory */
+    memset(thiz->_data, 0, thiz->_itemsize * thiz->_total_length);
+
+    return RBUF_NO_ERROR;
+}
 
 

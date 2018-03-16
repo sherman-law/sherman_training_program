@@ -80,5 +80,13 @@ int main ()
     printf("write_cursor:%d\r\n", ming_rbuf._write_cursor);
     printf("read_cursor:%d\r\n", ming_rbuf._read_cursor);
 
+    printf("****************\r\n");
+    printf("reset ring_buffer ...!!\r\n");
+    rbuf_reset(&ming_rbuf);
+    print_all(&ming_rbuf, ARRAY_LEN(int_buf));
+    printf("space_left:%d\r\n", ming_rbuf._space_left);
+    printf("write_cursor:%d\r\n", ming_rbuf._write_cursor);
+    printf("read_cursor:%d\r\n", ming_rbuf._read_cursor);
+
     return 0;
 }

@@ -4,11 +4,11 @@
 #include "../common.h"
 
 typedef int rbuf_status_t;
-#define R_BUF_NULL_ERROR   0
-#define R_BUF_NO_ERROR     1
-#define R_BUF_INVAIL_PARAM 2
-#define R_BUF_FAIL         3 
-#define R_BUF_EMPTY        4 
+#define RBUF_NULL_ERROR   0
+#define RBUF_NO_ERROR     1
+#define RBUF_INVAIL_PARAM 2
+#define RBUF_FAIL         3 
+#define RBUF_EMPTY        4 
 
 typedef struct _rbuf_t {
     void     *_data;         /* point to the memory that storage user's data */
@@ -53,6 +53,15 @@ rbuf_status_t rbuf_write(rbuf_t *thiz, const void *data, uint16_t length);
  * \retval error code
  */
 rbuf_status_t rbuf_read(rbuf_t *thiz, void *data, uint16_t length);
+
+/**
+ * \brief  ring buffer reset function
+ *
+ * \param[in,out] thiz :thiz pointer pointe to rbuf_t object
+ *
+ * \retval error code
+ */
+rbuf_status_t rbuf_reset (rbuf_t *thiz);
 
 #endif
 
